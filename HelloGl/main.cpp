@@ -1,42 +1,49 @@
-#include <Windows.h>
+#include <iostream>
+
+#include <GL\glew.h>
 #include <GLFW\glfw3.h>
 
-#include <stdio.h>
-#include <stdlib.h>
+using namespace std;
 
 void error_callback(int error, const char* desc){
-	fputs(desc, stderr);
+	fprintf(stdout, "GLFW Error: %s\n", desc);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
 }
 
 int main(){
+	//Init GLFW
 	glfwSetErrorCallback(error_callback);
 
-	if (glfwInit == 0){//glfwInit returns 0 if failed, and non 0 if it succeeds
-		exit(EXIT_FAILURE);
+	if (!glfwInit()){
+		return 1;
 	}
 
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Hello OpenGl", NULL, NULL);//Returns NULL if fail
-	if (window == NULL){
+	//Setup context
+	GLFWwindow* window = glfwCreateWindow(640, 480, "Hello OpenGl", NULL, NULL);
+	if (!window){
 		glfwTerminate();
-		exit(EXIT_FAILURE);
+		return 1;
 	}
 
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, key_callback);
 
-	int width, heigth;
+	//Bind Gl
+	GLenum glewInitErr = glewInit();
+	if (glewInitErr != GLEW_OK){
+		fprintf(stdout, "Glew Error: %s\n", glewGetErrorString(glewInitErr));
+	}
 
-	while (glfwWindowShouldClose(window) == false){
-
+	while (!glfwWindowShouldClose(window)){
+		glfwPollEvents();
 	}
 
 	glfwDestroyWindow(window);
-    glfwTerminate();
-    exit(EXIT_SUCCESS);
+	glfwTerminate();
+	return 0;
 }
