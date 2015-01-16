@@ -3,6 +3,8 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 
+#include "ShaderLoader.h"
+
 using namespace std;
 
 void error_callback(int error, const char* desc){
@@ -20,14 +22,14 @@ int main(){
 	glfwSetErrorCallback(error_callback);
 
 	if (!glfwInit()){
-		return 1;
+		return ERROR_GLFW_INIT_FAIL;
 	}
 
 	//Setup context
 	GLFWwindow* window = glfwCreateWindow(640, 480, "Hello OpenGl", NULL, NULL);
 	if (!window){
 		glfwTerminate();
-		return 1;
+		return ERROR_GLFW_INIT_FAIL;
 	}
 
 	glfwMakeContextCurrent(window);
@@ -37,13 +39,24 @@ int main(){
 	GLenum glewInitErr = glewInit();
 	if (glewInitErr != GLEW_OK){
 		fprintf(stdout, "Glew Error: %s\n", glewGetErrorString(glewInitErr));
+		return ERROR_GLEW_INIT_FAIL;
 	}
 
+	GLuint vertexShader;
+	GLuint fragmentShader;
+
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	ShaderLoader *vertexShaderLoader = new ShaderLoader("simple_vertex_shader.glsl");
+	vertexShaderLoader->load(&vertexShader);
+
 	while (!glfwWindowShouldClose(window)){
+		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
-	return 0;
+	return ERROR_OK;
 }

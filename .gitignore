@@ -1,7 +1,3 @@
 #Visual Studio
 Debug
-*.sdf
 *.opensdf
-*.suo
-*.vcxproj.user
-ipch
