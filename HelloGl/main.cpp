@@ -3,6 +3,8 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 
+#include "Errors.h"
+#include "Vector3.h"
 #include "ShaderLoader.h"
 
 using namespace std;
@@ -42,16 +44,42 @@ int main(){
 		return ERROR_GLEW_INIT_FAIL;
 	}
 
-	GLuint vertexShader;
-	GLuint fragmentShader;
+	//Setup Vertex arrays
+	GLuint vertexArray;
+	glGenVertexArrays(1, &vertexArray);
+	glBindVertexArray(vertexArray);
 
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	Vector3 vertexBufferData[] = {
+		Vector3::Vector3(-1.0f, -1.0f, 0.0f),
+		Vector3::Vector3(1.0f, -1.0f, 0.0f),
+		Vector3::Vector3(0.0f, 1.0f, 0.0f)
+	};
 
-	ShaderLoader *vertexShaderLoader = new ShaderLoader("simple_vertex_shader.glsl");
-	vertexShaderLoader->load(&vertexShader);
+	GLuint vertexBuffer;
+	glGenBuffers(1, &vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferData), vertexBufferData, GL_STATIC_DRAW);
+
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	int vertexShaderLoadResult = ShaderLoader::load("simple_vertex_shader.glsl", &vertexShader);
+	int fragmentShaderLoadResult = ShaderLoader::load("simple_fragment_shader.glsl", &fragmentShader);
 
 	while (!glfwWindowShouldClose(window)){
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glUseProgram(vertexShaderLoadResult);
+		glUseProgram(fragmentShaderLoadResult);
+
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glDisableVertexAttribArray(0);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

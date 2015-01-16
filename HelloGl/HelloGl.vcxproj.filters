@@ -28,10 +28,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ShaderLoader.h">
+    <ClInclude Include="Errors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Errors.h">
+    <ClInclude Include="Vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

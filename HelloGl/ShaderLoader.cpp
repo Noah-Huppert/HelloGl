@@ -1,45 +1,44 @@
 #include "ShaderLoader.h"
 
-ShaderLoader::ShaderLoader(string fileLocation): fileLocation(fileLocation){}
+int ShaderLoader::load(char *filePath, GLuint *shader){
+	//Load shader file
+	string shaderFileContents;
+	ifstream shaderFile(filePath, ios::in);
 
-int ShaderLoader::load(GLuint *shader){
-	GLchar** shaderSource;
-	ifstream file;
-
-	//Open file
-	file.open(fileLocation, ios::in);
-	if (!file){
-		return ERROR_FILE_NOT_FOUND;
-	}
-
-	//Get file length
-	unsigned long shaderSourceLen;
-	file.tellg();
-	file.seekg(0, ios::end);
-	shaderSourceLen = file.tellg();
-	file.seekg(ios::beg);
-
-	if (shaderSourceLen == 0){
-		return ERROR_FILE_EMPTY;
-	}
-
-	//Fill shaderSource)
-	*shaderSource = (GLubyte*) new char[shaderSourceLen + 1];
-	*shaderSource[shaderSourceLen] = 0;
-	unsigned int lineNum = 0;
-	while (file.good()){
-		*shaderSource[lineNum] = file.get();
-		if (!file.eof()){
-			lineNum++;
+	if (shaderFile.is_open()){
+		string line;
+		while (getline(shaderFile, line)){
+			shaderFileContents += "\n" + line;
 		}
+		shaderFile.close();
 	}
 
-	*shaderSource[lineNum] = 0;
+	//Compile shader
+	const char *shaderSourcePointer = shaderFileContents.c_str();
+	glShaderSource(*shader, 1, &shaderSourcePointer, NULL);
+	glCompileShader(*shader);
 
-	file.close();
-	
-	//Set shader source
-	glShaderSource(*shader, 1, shaderSource, (const GLint*) shaderSourceLen);
+	//Check shader
+	GLint shaderCheckResult = GL_FALSE;
+	int infoLogLength;
+	glGetShaderiv(*shader, GL_COMPILE_STATUS, &shaderCheckResult);
+	glGetShaderiv(*shader, GL_INFO_LOG_LENGTH, &infoLogLength);
+	vector<char> shaderErrorMessage(infoLogLength);
+	glGetShaderInfoLog(*shader, infoLogLength, NULL, &shaderErrorMessage[0]);
 
-	return ERROR_OK;
+	fprintf(stdout, "%s\n", &shaderErrorMessage[0]);
+
+	//Link
+	GLuint programId = glCreateProgram();
+	glAttachShader(programId, *shader);
+	glLinkProgram(programId);
+
+	glGetProgramiv(programId, GL_LINK_STATUS, &shaderCheckResult);
+	glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &infoLogLength);
+	vector<char> programErrorMessage(max(infoLogLength, int(1)));
+	glGetProgramInfoLog(programId, infoLogLength, NULL, &programErrorMessage[0]);
+
+	fprintf(stdout, "%s\n", &programErrorMessage[0]);
+
+	return programId;
 }
