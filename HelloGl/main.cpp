@@ -4,7 +4,8 @@
 #include <GLFW\glfw3.h>
 
 #include "Errors.h"
-#include "Vector3.h"
+#include "Vector4.h"
+#include "Matrix4.h"
 #include "ShaderLoader.h"
 
 using namespace std;
@@ -49,10 +50,10 @@ int main(){
 	glGenVertexArrays(1, &vertexArray);
 	glBindVertexArray(vertexArray);
 
-	Vector3 vertexBufferData[] = {
-		Vector3::Vector3(-1.0f, -1.0f, 0.0f),
-		Vector3::Vector3(1.0f, -1.0f, 0.0f),
-		Vector3::Vector3(0.0f, 1.0f, 0.0f)
+	Vector4 vertexBufferData[] = {
+		Vector4::Vector4(-1.0f, -1.0f, 0.0f, VECTOR_POSITION),
+		Vector4::Vector4(1.0f, -1.0f, 0.0f, VECTOR_POSITION),
+		Vector4::Vector4(0.0f, 1.0f, 0.0f, VECTOR_POSITION)
 	};
 
 	GLuint vertexBuffer;
@@ -60,17 +61,22 @@ int main(){
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferData), vertexBufferData, GL_STATIC_DRAW);
 
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint vertexShaderId = NULL;
+	GLuint fragmentShaderId = NULL;
 
-	int vertexShaderLoadResult = ShaderLoader::load("simple_vertex_shader.glsl", &vertexShader);
-	int fragmentShaderLoadResult = ShaderLoader::load("simple_fragment_shader.glsl", &fragmentShader);
+	int vertexShaderLoadError = ShaderLoader::create(GL_VERTEX_SHADER, "simple_vertex_shader.glsl", &vertexShaderId);
+	int fragmentShaderLoadError = ShaderLoader::create(GL_FRAGMENT_SHADER, "simple_fragment_shader.glsl", &fragmentShaderId);
+
+	if (vertexShaderLoadError != ERROR_OK || fragmentShaderLoadError != ERROR_OK){
+		fprintf(stdout, "Shaders failed to load, Vertex Error: %i, Fragment Error: %i", vertexShaderLoadError, fragmentShaderLoadError);
+		return ERROR_SHADERS_LOAD_FAIL;
+	}
 
 	while (!glfwWindowShouldClose(window)){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(vertexShaderLoadResult);
-		glUseProgram(fragmentShaderLoadResult);
+		glUseProgram(vertexShaderId);
+		glUseProgram(fragmentShaderId);
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);

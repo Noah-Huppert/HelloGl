@@ -1,6 +1,13 @@
 #include "ShaderLoader.h"
 
-int ShaderLoader::load(char *filePath, GLuint *shader){
+int ShaderLoader::create(GLenum shaderType, char *filePath, GLuint *shaderProgramId){
+	GLuint shader = glCreateShader(shaderType);
+	int loadStatus = ShaderLoader::load(filePath, &shader, shaderProgramId);
+	glDeleteShader(shader);
+	return loadStatus;
+}
+
+int ShaderLoader::load(char *filePath, GLuint *shader, GLuint *shaderProgramId){
 	//Load shader file
 	string shaderFileContents;
 	ifstream shaderFile(filePath, ios::in);
@@ -26,7 +33,10 @@ int ShaderLoader::load(char *filePath, GLuint *shader){
 	vector<char> shaderErrorMessage(infoLogLength);
 	glGetShaderInfoLog(*shader, infoLogLength, NULL, &shaderErrorMessage[0]);
 
-	fprintf(stdout, "%s\n", &shaderErrorMessage[0]);
+	if (shaderErrorMessage[0] != NULL){
+		fprintf(stdout, "Check Shader Error\n%s\n", &shaderErrorMessage[0]);
+		return ERROR_SHADER_CHECK_FAIL;
+	}
 
 	//Link
 	GLuint programId = glCreateProgram();
@@ -38,7 +48,12 @@ int ShaderLoader::load(char *filePath, GLuint *shader){
 	vector<char> programErrorMessage(max(infoLogLength, int(1)));
 	glGetProgramInfoLog(programId, infoLogLength, NULL, &programErrorMessage[0]);
 
-	fprintf(stdout, "%s\n", &programErrorMessage[0]);
+	if (programErrorMessage[0] != NULL){
+		fprintf(stdout, "Link Error\n%s\n", &programErrorMessage[0]);
+		return ERROR_SHADER_LINK_FAIL;
+	}
 
-	return programId;
+	*shaderProgramId = programId;
+
+	return ERROR_OK;
 }
