@@ -3,28 +3,38 @@
 
 #include "Matrix4.h"
 #include "Vector4.h"
+#include "vector"
+
+using namespace std;
 
 class VertexManager{
 private:
-	Matrix4 globalTransformationMatrix;
+	Matrix4 globalTranslationMatrix;
+	Matrix4 globalRotationMatrix;
 	Matrix4 globalScaleMatrix;
 	Matrix4 identityMatrix;
 
-	Vector4 vertices[];
+	Matrix4 viewMatrix;
+
+	vector<Vector4> vertices;
 
 public:
+	VertexManager();
+
 	/* Getters */
-	Matrix4 getGlobalTransformationMatrix();
+	Matrix4 getGlobalTranslationMatrix();
+	Matrix4 getGlobalRotationMatrix();
 	Matrix4 getGlobalScaleMatrix();
 	Matrix4 getIndentityMatrix();
-	Vector4* getVertices();
-	Vector4* getTransformedVertices();
+	vector<Vector4> getVertices();
+	vector<Vector4> getTransformedVertices();
 
 	/* Setters */
-	void setGlobalTransformationMatrix(Matrix4 globalTransformationMatrix);
+	void setGlobalTranslationMatrix(Matrix4 globalTransformationMatrix);
+	void setGlobalRotationMatrix(Matrix4 globalRotationMatrix);
 	void setGlobalScaleMatrix(Matrix4 globalScaleMatrix);
 	void setIdentityMatrix(Matrix4 identityMatrix);
-	void setVertices(Vector4 vertices);
+	void setVertices(vector<Vector4> vertices);
 };
 
 #endif

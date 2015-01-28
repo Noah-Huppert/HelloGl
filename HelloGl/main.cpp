@@ -51,9 +51,9 @@ int main(){
 	glBindVertexArray(vertexArray);
 
 	Vector4 vertexBufferData[] = {
-		Vector4::Vector4(-1.0f, -1.0f, 0.0f, VECTOR_POSITION),
-		Vector4::Vector4(1.0f, -1.0f, 0.0f, VECTOR_POSITION),
-		Vector4::Vector4(0.0f, 1.0f, 0.0f, VECTOR_POSITION)
+		Vector4(-1.0f, -1.0f, 0.0f, VECTOR_POSITION),
+		Vector4(1.0f, -1.0f, 0.0f, VECTOR_POSITION),
+		Vector4(0.0f, 1.0f, 0.0f, VECTOR_POSITION)
 	};
 
 	GLuint vertexBuffer;
