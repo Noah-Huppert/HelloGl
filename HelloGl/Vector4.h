@@ -9,13 +9,13 @@
 
 #include "Errors.h"
 
-struct Vector4{
+struct Vector4 {
 	GLfloat x;
 	GLfloat y;
 	GLfloat z;
 	GLint w;
 
-	Vector4() : x(0), y(0), z(0), w(VECTOR_POSITION){}
+	Vector4() : x(0), y(0), z(0), w(0){}
 	Vector4(GLfloat x, GLfloat y, GLfloat z, GLint w) : x(x), y(y), z(z), w(w){}
 
 	GLfloat get(int index){
@@ -34,11 +34,11 @@ struct Vector4{
 	}
 
 	Vector4 operator * (Vector4 &factor){
-		x *= factor.x;
-		y *= factor.y;
-		z *= factor.z;
-		w *= factor.w;
-		return *this;
+		return Vector4(
+			x * factor.x,
+			y * factor.y,
+			z * factor.z,
+			w * factor.w);
 	}
 
 	Vector4 operator *= (Vector4 &factor){

@@ -1,25 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{df5b606b-4f76-4cd1-a6a2-80b190822fd6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{fe65af74-dc75-4bd0-86ba-b7e0ec4e04d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader Files">
       <UniqueIdentifier>{3ceb33d5-0278-4905-87c8-174a0c8c57e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{fa9f2803-5631-454b-b481-21a803594978}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{d3253e6d-5788-413a-8ae5-316b605af41b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Constants">
+      <UniqueIdentifier>{343c3ea2-1917-40a4-bcbc-d38cdaf600c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\RenderBatch">
+      <UniqueIdentifier>{dd9805b3-9d74-4538-a01d-fd99036a6d12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\ShaderLoader">
+      <UniqueIdentifier>{539b9dcf-df89-4190-9a70-2a13044bffec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\RenderCamera">
+      <UniqueIdentifier>{87eab30e-a113-4ec9-b2f0-7b1f94fd740f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\VertexPrimitive">
+      <UniqueIdentifier>{1246a2b4-4106-4c9c-8bd4-424b0fe720f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="RenderBatch.cpp">
+      <Filter>Render\RenderBatch</Filter>
     </ClCompile>
     <ClCompile Include="ShaderLoader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Render\ShaderLoader</Filter>
     </ClCompile>
-    <ClCompile Include="VertexManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderCamera.cpp">
+      <Filter>Render\RenderCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexPrimitive.cpp">
+      <Filter>Render\VertexPrimitive</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -31,20 +53,35 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Errors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Vector4.h">
-      <Filter>Header Files</Filter>
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="Matrix4.h">
-      <Filter>Header Files</Filter>
+      <Filter>Models</Filter>
     </ClInclude>
-    <ClInclude Include="VertexManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Errors.h">
+      <Filter>Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformMatrix.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderBatch.h">
+      <Filter>Render\RenderBatch</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>Render\ShaderLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderCamera.h">
+      <Filter>Render\RenderCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexPrimitive.h">
+      <Filter>Render\VertexPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -18,13 +18,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -71,8 +71,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderBatch.cpp" />
+    <ClCompile Include="RenderCamera.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
-    <ClCompile Include="VertexManager.cpp" />
+    <ClCompile Include="VertexPrimitive.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="simple_fragment_shader.glsl" />
@@ -81,9 +83,14 @@
   <ItemGroup>
     <ClInclude Include="Errors.h" />
     <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="RenderBatch.h" />
+    <ClInclude Include="RenderCamera.h" />
     <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="TransformMatrix.h" />
+    <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
-    <ClInclude Include="VertexManager.h" />
+    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="VertexPrimitive.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

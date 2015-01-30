@@ -11,6 +11,12 @@ struct Matrix4{
 
 	Matrix4() : x(Vector4()), y(Vector4()), z(Vector4()), w(Vector4()){}
 	Matrix4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : x(x), y(y), z(z), w(w){}
+	Matrix4(float identityValue) : x(Vector4()), y(Vector4()), z(Vector4()), w(Vector4()){
+		x.x = identityValue;
+		y.y = identityValue;
+		z.z = identityValue;
+		w.w = identityValue;
+	}
 
 	Vector4 getColumn(int colNum){
 		return Vector4(x.get(colNum), y.get(colNum), z.get(colNum), w.get(colNum));
