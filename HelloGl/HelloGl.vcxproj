@@ -79,6 +79,7 @@
   <ItemGroup>
     <None Include="simple_fragment_shader.glsl" />
     <None Include="simple_vertex_shader.glsl" />
+    <None Include="vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Errors.h" />

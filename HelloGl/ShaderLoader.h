@@ -12,8 +12,9 @@ using namespace std;
 
 class ShaderLoader{
 public:
-	static int create(GLenum shaderType, char *filePath, GLuint *shaderProgramId);
-	static int load(char *filePath, GLuint *shader, GLuint *shaderProgramId);
+	static int create(GLenum shaderType, char *filePath, GLuint shaderProgram);
+	static int load(char *filePath, GLuint *shader, GLuint shaderProgram);
+	static int link(GLuint shaderProgram);
 };
 
 #endif

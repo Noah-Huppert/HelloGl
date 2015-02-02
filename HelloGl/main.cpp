@@ -60,22 +60,27 @@ int main(){
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferData), vertexBufferData, GL_STATIC_DRAW);
 
-	GLuint vertexShaderId = NULL;
-	GLuint fragmentShaderId = NULL;
+	GLuint shaderProgram = glCreateProgram();
 
-	int vertexShaderLoadError = ShaderLoader::create(GL_VERTEX_SHADER, "simple_vertex_shader.glsl", &vertexShaderId);
-	int fragmentShaderLoadError = ShaderLoader::create(GL_FRAGMENT_SHADER, "simple_fragment_shader.glsl", &fragmentShaderId);
+	int vertexShaderLoadError = ShaderLoader::create(GL_VERTEX_SHADER, "simple_vertex_shader.glsl", shaderProgram);
+	int fragmentShaderLoadError = ShaderLoader::create(GL_FRAGMENT_SHADER, "simple_fragment_shader.glsl", shaderProgram);
 
 	if (vertexShaderLoadError != ERROR_OK || fragmentShaderLoadError != ERROR_OK){
-		fprintf(stdout, "Shaders failed to load, Vertex Error: %i, Fragment Error: %i", vertexShaderLoadError, fragmentShaderLoadError);
+		printf("Shaders failed to load, Vertex Error: %i, Fragment Error: %i", vertexShaderLoadError, fragmentShaderLoadError);
 		return ERROR_SHADERS_LOAD_FAIL;
+	}
+
+	int shadersLinkError = ShaderLoader::link(shaderProgram);
+
+	if (shadersLinkError != ERROR_OK){
+		printf("Shaders link fail");
+		return ERROR_SHADER_LINK_FAIL;
 	}
 
 	while (!glfwWindowShouldClose(window)){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(vertexShaderId);
-		glUseProgram(fragmentShaderId);
+		glUseProgram(shaderProgram);
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);

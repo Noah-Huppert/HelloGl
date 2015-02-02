@@ -9,10 +9,19 @@ RenderBatch::RenderBatch(int maxVerticesCount, int renderType):
 		fprintf(stdout, "Render Batch Error: maxVerticesCount must be over 1000 was %i(code: %i)", maxVerticesCount, ERROR_RENDER_BATCH_MIN_VERTICES_LOW);
 	}
 
-	//TODO Implement the rest of RenderBatch::RenderBatch()
+	glGetError();
+
+	glGenVertexArrays(1, &vertexArray);
+	glBindVertexArray(vertexArray);
+
+	glGenBuffers(1, &vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, maxVerticesCount * sizeof(Vertex), nullptr, GL_STREAM_DRAW);
 }
 
 RenderBatch::~RenderBatch(){}//TODO Implement RenderBatch::~RenderBatch()
 
 /* Actions */
-void RenderBatch::render(){}//TODO Implement RenderBatch::render()
+void RenderBatch::render(){
+	
+}
